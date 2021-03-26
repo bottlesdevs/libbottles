@@ -4,14 +4,10 @@ class Bottle:
 
     Parameters
     ----------
-    pid : str
-        the process id
-    name: str
-        the process name (command)
-    parent_pid: str (optional)
-        the parent process id
-    wine: Wine
-        the Wine object
+    path : str
+        the bottle full path
+    generate : bool (optional)
+        generate config file if missing in path (default is False)
     '''
     name = str
     path = str
