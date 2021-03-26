@@ -1,18 +1,40 @@
-def list_bottles(extra_paths: list = []):
+from glob import glob
+from bottle import Bottle
+
+
+def list_bottles(paths: list):
     '''
     List user bottles.
 
     Parameters
     ----------
-    extra_paths : str (optional)
-        add extra paths to the search
+    paths : list
+        paths to search for bottles
 
     Return
     ----------
     list:
         a list of Bottle objects
     '''
-    return
+    results = []
+    for p in paths:
+        results += glob(p, recursive=True)
+
+    bottles = []
+    for r in results:
+        bottle = Bottle(r)
+        bottles.append(bottle)
+
+    return bottles
+
+
+'''
+print(
+    list_bottles(
+        paths=["/home/mirko/.local/share/bottles/bottles/*"]
+    )
+)
+'''
 
 
 def list_runners():
