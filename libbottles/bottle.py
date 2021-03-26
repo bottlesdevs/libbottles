@@ -62,7 +62,8 @@ class Bottle:
     }
 
     def __init__(self, path: str, generate: bool = False):
-        pass
+        if not self.validate_bottle(path):
+            raise ValueError("Given path doesn't seem a valid Bottle path.")
 
     def validate_bottle(self):
         '''
