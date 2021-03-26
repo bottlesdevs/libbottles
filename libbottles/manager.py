@@ -22,8 +22,11 @@ def list_bottles(paths: list):
 
     bottles = []
     for r in results:
-        bottle = Bottle(r)
-        bottles.append(bottle)
+        try:
+            bottle = Bottle(r)
+            bottles.append(bottle)
+        except ValueError:
+            continue
 
     return bottles
 
