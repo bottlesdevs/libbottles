@@ -42,17 +42,12 @@ class Bottle:
     }
 
     def __init__(self, path: str):
-        if not self.__validate_bottle(path):
-            raise ValueError("Given path doesn't seem a valid Bottle path.")
+        self.__validate_bottle(path)
+        self.__load_config(path)
 
     def __validate_bottle(self, path):
         '''
-        Check if it is a valid bottle path.
-
-        Return
-        ----------
-        bool
-            True if it is a valid bottle path, otherwise False
+        Check if essential paths exist in path.
 
         Parameters
         ----------
@@ -66,10 +61,18 @@ class Bottle:
 
         for p in promise:
             if p not in dirs:
-                return False
+                raise ValueError("Given path doesn't seem a valid Bottle path.")
+        return True
 
+    def __load_config(self, path):
         '''
         Load config from path, if doesn't exists then create.
+        Also update config structure if outdated.
+
+        Parameters
+        ----------
+        path : str
+            the bottle full path
         '''
         try:
             file = open(f"{path}/bottle.json")
@@ -105,8 +108,6 @@ class Bottle:
                 value=self.config_struct["Parameters"][key],
                 scope="Parameters"
             )
-
-        return True
 
     def update_config(self, key: str, value: str, scope: str = None):
         '''
