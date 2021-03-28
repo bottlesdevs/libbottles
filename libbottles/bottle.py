@@ -13,31 +13,7 @@ class Bottle:
     path : str
         the bottle full path
     '''
-    name = str
-    path = str
-    runner = str
-    dxvk = str
-    environment = int
-    creation_date = str
-    update_date = str
-    versioning = False
-    state = int
-
-    param_dxvk = False
-    param_dxvk_hud = False
-    param_sync = False
-    param_aco_compiler = False
-    param_discrete_gpu = False
-    param_virtual_desktop = False
-    param_virtual_desktop_res = str
-    param_pulseaudio_latency = False
-    param_fixme_logs = False
-    param_environment_variables = str
-
-    dependencies = []
-    dll_overrides = {}
-    programs = {}
-
+    config = {}
     config_struct = {
         "Name": "",
         "Runner": "",
@@ -66,11 +42,10 @@ class Bottle:
     }
 
     def __init__(self, path: str):
-        self.path = path
-        if not self.validate_bottle():
+        if not self.__validate_bottle(path):
             raise ValueError("Given path doesn't seem a valid Bottle path.")
 
-    def validate_bottle(self):
+    def __validate_bottle(self, path):
         '''
         Check if it is a valid bottle path.
 
@@ -78,49 +53,56 @@ class Bottle:
         ----------
         bool
             True if it is a valid bottle path, otherwise False
+
+        Parameters
+        ----------
+        path : str
+            the bottle full path
         '''
         promise = ["dosdevices", "drive_c"]
 
-        dirs = glob(f"{self.path}/*")
-        dirs = [d.replace(f"{self.path}/", "") for d in dirs]
+        dirs = glob(f"{path}/*")
+        dirs = [d.replace(f"{path}/", "") for d in dirs]
 
         for p in promise:
             if p not in dirs:
                 return False
 
         '''
-        Load config from path, if it not exists then create.
+        Load config from path, if doesn't exists then create.
         '''
         try:
-            file = open(f"{self.path}/bottle.json")
-            config = json.load(file)
+            file = open(f"{path}/bottle.json")
+            self.config = json.load(file)
             file.close()
         except FileNotFoundError:
-            file = open(f"{self.path}/bottle.json", "w")
+            file = open(f"{path}/bottle.json", "w")
             config = self.config_struct
             config["Name"] = f"Generated {randint(10000, 20000)}"
-            config["Path"] = self.path
+            config["Path"] = path
             # TODO: set runner to last installed
             json.dump(config, file, indent=4)
-            config = json.load(file)
+            self.config = json.load(file)
             file.close()
 
         '''
         Check for diffs. between config_struct and the bottle one, then update.
         '''
-        missing_keys = self.config_struct.keys() - config.keys()
+        missing_keys = self.config_struct.keys() - self.config.keys()
         for key in missing_keys:
             self.update_config(
                 key=key,
                 value=self.config_struct[key]
             )
 
-        missing_keys = self.config_struct["Parameters"].keys(
-        ) - config["Parameters"].keys()
+        missing_keys = (
+            self.config_struct["Parameters"].keys() -
+            self.config["Parameters"].keys()
+        )
         for key in missing_keys:
             self.update_config(
                 key=key,
-                value=self.config_struct[key],
+                value=self.config_struct["Parameters"][key],
                 scope="Parameters"
             )
 
@@ -144,6 +126,6 @@ class Bottle:
         else:
             self.config[key] = value
 
-        file = open(f"{self.path}/bottle.json", "w")
+        file = open(f"{self.config['Path']}/bottle.json", "w")
         json.dump(self.config, file, indent=4)
         file.close()
