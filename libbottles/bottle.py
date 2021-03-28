@@ -1,5 +1,8 @@
 import json
 from glob import glob
+from random import seed, randint
+seed(1)
+
 
 class Bottle:
     '''
@@ -95,7 +98,7 @@ class Bottle:
         except FileNotFoundError:
             file = open(f"{self.path}/bottle.json", "w")
             config = self.config_struct
-            config["Name"] = self.path.capitalize()
+            config["Name"] = f"Generated {randint(10000, 20000)}"
             config["Path"] = self.path
             # TODO: set runner to last installed
             json.dump(config, file, indent=4)
@@ -112,17 +115,18 @@ class Bottle:
                 value=self.config_struct[key]
             )
 
-        missing_keys = self.config_struct["Parameters"].keys() - config["Parameters"].keys()
+        missing_keys = self.config_struct["Parameters"].keys(
+        ) - config["Parameters"].keys()
         for key in missing_keys:
             self.update_config(
                 key=key,
                 value=self.config_struct[key],
                 scope="Parameters"
             )
-            
+
         return True
 
-    def update_config(self, key:str, value:str, scope:str=None):
+    def update_config(self, key: str, value: str, scope: str = None):
         '''
         Update keys for a bottle config file.
 
