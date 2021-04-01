@@ -1,6 +1,8 @@
 import json
 from glob import glob
 from random import seed, randint
+
+from libwine.wine import Wine
 seed(1)
 
 
@@ -14,7 +16,7 @@ class Bottle:
         the bottle full path
     '''
     config = {}
-    config_struct = {
+    _config_struct = {
         "Name": "",
         "Runner": "",
         "DXVK": "",
@@ -24,6 +26,7 @@ class Bottle:
         "Update_Date": "",
         "Versioning": False,
         "State": 0,
+        "Verbose": 0,
         "Parameters": {
             "dxvk": False,
             "dxvk_hud": False,
@@ -33,17 +36,22 @@ class Bottle:
             "virtual_desktop": False,
             "virtual_desktop_res": "1280x720",
             "pulseaudio_latency": False,
-            "fixme_logs": False,
             "environment_variables": "",
         },
         "Installed_Dependencies": [],
         "DLL_Overrides": {},
         "Programs": {}
     }
+    wineprefix = object
 
     def __init__(self, path: str):
         self.__validate_bottle(path)
         self.__load_config(path)
+        self.__set_wineprefix()
+
+    '''
+    Bottle checks
+    '''
 
     def __validate_bottle(self, path):
         '''
@@ -61,7 +69,8 @@ class Bottle:
 
         for p in promise:
             if p not in dirs:
-                raise ValueError("Given path doesn't seem a valid Bottle path.")
+                raise ValueError(
+                    "Given path doesn't seem a valid Bottle path.")
         return True
 
     def __load_config(self, path):
@@ -80,7 +89,7 @@ class Bottle:
             file.close()
         except FileNotFoundError:
             file = open(f"{path}/bottle.json", "w")
-            config = self.config_struct
+            config = self._config_struct
             config["Name"] = f"Generated {randint(10000, 20000)}"
             config["Path"] = path
             # TODO: set runner to last installed
@@ -89,25 +98,41 @@ class Bottle:
             file.close()
 
         '''
-        Check for diffs. between config_struct and the bottle one, then update.
+        Check for diffs. between _config_struct and the bottle one, then update.
         '''
-        missing_keys = self.config_struct.keys() - self.config.keys()
+        missing_keys = self._config_struct.keys() - self.config.keys()
         for key in missing_keys:
             self.update_config(
                 key=key,
-                value=self.config_struct[key]
+                value=self._config_struct[key]
             )
 
         missing_keys = (
-            self.config_struct["Parameters"].keys() -
+            self._config_struct["Parameters"].keys() -
             self.config["Parameters"].keys()
         )
         for key in missing_keys:
             self.update_config(
                 key=key,
-                value=self.config_struct["Parameters"][key],
+                value=self._config_struct["Parameters"][key],
                 scope="Parameters"
             )
+
+    '''
+    Wineprefix instance
+    '''
+
+    def __set_wineprefix(self):
+        # TODO: runner.get()
+        self.wineprefix = Wine(
+            winepath=self.config["Path"],
+            wineprefix=self.config["Path"],
+            verbose=self.config["Verbose"]
+        )
+
+    '''
+    Bottle config tools
+    '''
 
     def update_config(self, key: str, value: str, scope: str = None):
         '''
@@ -130,3 +155,7 @@ class Bottle:
         file = open(f"{self.config['Path']}/bottle.json", "w")
         json.dump(self.config, file, indent=4)
         file.close()
+
+    '''
+    Bottle management
+    '''
