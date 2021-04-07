@@ -1,6 +1,7 @@
 import json
 from glob import glob
 from random import seed, randint
+import globals
 
 from libwine.wine import Wine
 seed(1)
@@ -152,7 +153,8 @@ class Bottle:
         else:
             self.config[key] = value
 
-        file = open(f"{self.config['Path']}/bottle.json", "w")
+        file = open(
+            f"{globals.Paths.bottles}{self.config['Path']}/bottle.json", "w")
         json.dump(self.config, file, indent=4)
         file.close()
 

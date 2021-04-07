@@ -1,5 +1,6 @@
 from glob import glob
 from bottle import Bottle
+import globals
 
 
 def list_bottles(paths: list):
@@ -34,8 +35,8 @@ def list_bottles(paths: list):
 '''
 print(
     list_bottles(
-        paths=["/home/mirko/.local/share/bottles/bottles/*"]
-    )
+        paths=[f"{globals.Paths.bottles}*"]
+    )[0].config["Parameters"]
 )
 '''
 
