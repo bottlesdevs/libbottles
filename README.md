@@ -28,7 +28,8 @@ bottle configuration model.
 
 **Can I use libbottles to manage wine/wineprefix in my application?**
 No, or rather yes, but it would be better not. If your purpose is to work with 
-Wine or wineprefixes in general, you should use the libwine library. This 
+Wine or wineprefixes in general, you should use the 
+[libwine](https://github.com/bottlesdevs/libwine) library. This 
 offers a number of methods to create and manage a wineprefix.
 
 **Can I use libwine to creare 3rd party Bottles clients?**
