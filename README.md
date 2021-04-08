@@ -17,7 +17,7 @@ Soon this library will offer all the features to interact with bottles
 - and more.. (all you can do today in Bottles and more)
 
 ### Best practices
-If you create a Bottles client you have to use libbottles, all the 
+If you want to create a Bottles client you have to use libbottles, all the 
 functionalities that interact with the bottles must come from the library and 
 not be hard-scripted.  
 
