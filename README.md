@@ -38,11 +38,11 @@ should use libbottles, thus taking advantage of the official methods to access
 and manage your bottles in the system.
 
 **Ok. Why?**  
-By using libbottles we make sure we offer a standard to developers and 
+By using libbottles we make sure we offer a development standard and 
 encourage them to work together to improve a single foundation.
 
 **It is not too much?**  
 No, we don't believe. Bottles is a hobby made with passion but everyone has 
 their own commitments and it is important to manage the project in the best way 
 right away to avoid having to get your hands on multiple projects, each with 
-a different source base, methods and ogics.
+a different code base, methods and logics.
