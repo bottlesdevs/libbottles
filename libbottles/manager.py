@@ -1,9 +1,10 @@
 from glob import glob
 from bottle import Bottle
+from runner import Runner
 import globals
 
 
-def list_bottles(paths: list):
+def list_bottles(paths: list = [globals.Paths.bottles]):
     '''
     List user bottles.
 
@@ -19,7 +20,7 @@ def list_bottles(paths: list):
     '''
     results = []
     for p in paths:
-        results += glob(p, recursive=True)
+        results += glob(f"{p}/*", recursive=True)
 
     bottles = []
     for r in results:
@@ -34,14 +35,12 @@ def list_bottles(paths: list):
 
 '''
 print(
-    list_bottles(
-        paths=[f"{globals.Paths.bottles}*"]
-    )[0].config["Parameters"]
+    list_bottles()[0].config["Parameters"]
 )
 '''
 
 
-def list_runners():
+def list_runners(paths: list = [globals.Paths.runners]):
     '''
     List local runners.
 
@@ -50,7 +49,24 @@ def list_runners():
     list:
         a list of Runner objects
     '''
-    return
+    results = []
+    for p in paths:
+        results += glob(f"{p}/*", recursive=True)
+
+    runners = []
+    for r in results:
+        try:
+            runner = Runner(r)
+            runners.append(runner)
+        except ValueError:
+            continue
+
+    return runners
+
+
+print(
+    list_runners()
+)
 
 
 def list_dxvk():
