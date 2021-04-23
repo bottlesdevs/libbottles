@@ -54,7 +54,8 @@ class Bottle:
     Bottle checks
     '''
 
-    def __validate_bottle(self, path):
+    @staticmethod
+    def __validate_bottle(path):
         '''
         Check if essential paths exist in path.
 
