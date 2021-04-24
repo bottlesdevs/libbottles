@@ -1,6 +1,6 @@
 from glob import glob
 from bottle import Bottle
-from runner import Runner
+from components.runner import Runner
 import globals
 
 
