@@ -1,6 +1,7 @@
 import json
 from glob import glob
 from random import seed, randint
+from libbottles.components.runner import Runner
 import globals
 
 from libwine.wine import Wine
@@ -22,7 +23,7 @@ class Bottle:
         "Runner": "",
         "DXVK": "",
         "Path": "",
-        "Environment": "",
+        "Environment": 2,
         "Creation_Date": "",
         "Update_Date": "",
         "Versioning": False,
@@ -43,6 +44,27 @@ class Bottle:
         "DLL_Overrides": {},
         "Programs": {}
     }
+    _environments = [
+        {
+            "Name": "Software",
+            "Parameters": {
+                "dxvk": True
+            }
+        },
+        {
+            "Name": "Gaming",
+            "Parameters": {
+                "dxvk": True,
+                "sync": "esync",
+                "discrete_gpu": True,
+                "pulseaudio_latency": True
+            }
+        },
+        {
+            "Name": "Custom",
+            "Parameters": {}
+        }
+    ]
     wineprefix = object
 
     def __init__(self, path: str):
@@ -125,9 +147,9 @@ class Bottle:
     '''
 
     def __set_wineprefix(self):
-        # TODO: runner.get()
+        # TODO: runner.get(self.config["Runner"])
         self.wineprefix = Wine(
-            winepath=self.config["Path"],
+            winepath=self.config["Runner"],
             wineprefix=self.config["Path"],
             verbose=self.config["Verbose"]
         )
@@ -135,6 +157,25 @@ class Bottle:
     '''
     Bottle config tools
     '''
+
+    def apply_environment(self, environment: int):
+        if not self._environments[environment]:
+            raise ValueError(f"{environment} is not a valid environment.")
+
+        self.update_config(
+            key="Environment",
+            value=environment
+        )
+        # TODO: work in progress
+        return
+
+    def apply_config(self, config: dict):
+        for key, value in config.items():
+
+            self.update_config(
+                key=key,
+                value=value
+            )
 
     def update_config(self, key: str, value: str, scope: str = None):
         '''
