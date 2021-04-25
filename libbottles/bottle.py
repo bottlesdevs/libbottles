@@ -67,17 +67,32 @@ class Bottle:
     ]
     wineprefix = object
 
-    def __init__(self, path: str):
-        self.__validate_bottle(path)
-        self.__load_config(path)
-        self.__set_wineprefix()
+    def __init__(self, path: str, create: bool = False, env: int = 3, name: str = None, runner_path: str = None, verbose: int = 0, versioning: bool = False):
+        if not create:
+            self.__validate(path)
+            self.__load_config(path)
+            self.__set_wineprefix(runner_path)
+        else:
+            self.config = {
+                "Path": path,
+                "Name": name,
+                "Runner": runner_path,
+                "Environment": env,
+                "Verbose": verbose,
+                "Versioning": versioning
+            }
+            self.__set_wineprefix(runner_path)
+            self.wineprefix.update()
+            self.__load_config(path)
+
+            self.apply_environment(env)
 
     '''
     Bottle checks
     '''
 
     @staticmethod
-    def __validate_bottle(path):
+    def __validate(path):
         '''
         Check if essential paths exist in path.
 
@@ -113,12 +128,19 @@ class Bottle:
             file.close()
         except FileNotFoundError:
             file = open(f"{path}/bottle.json", "w")
-            config = self._config_struct
-            config["Name"] = f"Generated {randint(10000, 20000)}"
-            config["Path"] = path
-            # TODO: set runner to last installed
-            json.dump(config, file, indent=4)
-            self.config = json.load(file)
+
+            if len(self.config) == 0:
+                config = self._config_struct
+                config["Name"] = f"Generated {randint(10000, 20000)}"
+                config["Path"] = path
+                # TODO: set runner to latest installed
+
+                json.dump(config, file, indent=4)
+                self.config = json.load(file)
+            else:
+                config = self.config
+                json.dump(config, file, indent=4)
+
             file.close()
 
         '''
@@ -146,10 +168,12 @@ class Bottle:
     Wineprefix instance
     '''
 
-    def __set_wineprefix(self):
-        # TODO: runner.get(self.config["Runner"])
+    def __set_wineprefix(self, runner_path: str = None):
+        if not runner_path:
+            runner_path = self.config["Runner"]
+
         self.wineprefix = Wine(
-            winepath=self.config["Runner"],
+            winepath=runner_path,
             wineprefix=self.config["Path"],
             verbose=self.config["Verbose"]
         )
@@ -171,22 +195,21 @@ class Bottle:
 
     def apply_config(self, config: dict):
         for key, value in config.items():
-
             self.update_config(
                 key=key,
                 value=value
             )
 
-    def update_config(self, key: str, value: str, scope: str = None):
+    def update_config(self, key: str = None, value: str = None, scope: str = None):
         '''
-        Update keys for a bottle config file.
+        Update keys for a bottle config.
 
         Parameters
         ----------
         key : str
-            the key name
+            the key namet
         value : str
-            the value to be set
+            the value to be sett
         scope : str (optional)
             where to look for the key if it is not the root (default is None)
         '''
@@ -196,7 +219,7 @@ class Bottle:
             self.config[key] = value
 
         file = open(
-            f"{globals.Paths.bottles}{self.config['Path']}/bottle.json", "w")
+            f"{self.config['Path']}/bottle.json", "w")
         json.dump(self.config, file, indent=4)
         file.close()
 
