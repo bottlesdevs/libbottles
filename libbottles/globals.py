@@ -8,3 +8,9 @@ class Paths:
     components = f"{_base}/components"
     runners = f"{components}/runners"
     dxvks = f"{components}/dxvks"
+
+
+class Repository:
+    _base = "https://raw.githubusercontent.com/bottlesdevs"
+    components = f"{_base}/components/main"
+    components_index = f"{components}/index.json"

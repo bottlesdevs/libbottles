@@ -12,9 +12,7 @@ class Repository:
     
     def update_index(self):
         r = Request()
-        # TODO: paths should be defined in globals
-        self._index = r.get("https://raw.githubusercontent.com/bottlesdevs/components/main/index.json")
-        print(self._index)
+        self._index = r.get(globals.Repository.components_index)
 
 
 Repository()
