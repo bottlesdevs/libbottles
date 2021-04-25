@@ -2,7 +2,7 @@ import json
 from glob import glob
 from random import seed, randint
 from libbottles.components.runner import Runner
-import globals
+from libbottles import globals
 
 from libwine.wine import Wine
 seed(1)
