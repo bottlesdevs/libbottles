@@ -1,23 +1,15 @@
 from glob import glob
-from os import environ
 
-from libwine.wine import Wine
-from libwine.proton import Proton
-
-from bottle import Bottle
-from components.runner import Runner
-import globals
+from libbottles.bottle import Bottle
+from libbottles.components.runner import Runner
+from libbottles import globals
 
 
 class Manager:
 
     _bottles = []
-    _components = []
-    _environments = [
-        "Software",
-        "Gaming",
-        "Custom"
-    ]
+    _runners = []
+    _dxvks = []
 
     @staticmethod
     def update_bottles(paths: list = [globals.Paths.bottles]):
@@ -32,11 +24,32 @@ class Manager:
         results = []
         for p in paths:
             results += glob(f"{p}/*", recursive=True)
-            
+
         for r in results:
             try:
                 bottle = Bottle(r)
                 Manager._bottles.append(bottle)
+            except ValueError:
+                continue
+
+    @staticmethod
+    def update_runners(paths: list = [globals.Paths.runners]):
+        '''
+        Update local runners.
+
+        Parameters
+        ----------
+        paths : list
+            paths to search for runners
+        '''
+        results = []
+        for p in paths:
+            results += glob(f"{p}/*", recursive=True)
+
+        for r in results:
+            try:
+                runner = Runner(r)
+                Manager._runners.append(runner)
             except ValueError:
                 continue
 
@@ -53,68 +66,39 @@ class Manager:
         return Manager._bottles
 
     @staticmethod
-    def create_bottle(environment: int, path: str, name: str, runner: Runner, runner_path: str, versioning: bool, verbose: int):
-        if not Manager._environments[environment]:
-            raise ValueError(f"{environment} is not a valid environment.")
-        
-        config = {
-            "Name": name,
-            "Runner": runner_path,
-            "Path": path,
-            "Versioning": versioning,
-            "Verbose": verbose
-        }
-
-        wineprefix = runner(
-            winepath=runner_path,
-            wineprefix=path
-        )
-        wineprefix.update()
-        
-        bottle = Bottle(path)
-        bottle.apply_config(config)
-        bottle.apply_environment(environment)
-
-        Manager._bottles.append(bottle)
-        return bottle
-
-
-    # TODO: old code starts from here
-
-    def list_runners(paths: list = [globals.Paths.runners]):
+    def get_runners():
         '''
-        List local runners.
+        Get local runners.
 
         Return
         ----------
         list:
             a list of Runner objects
         '''
-        results = []
-        for p in paths:
-            results += glob(f"{p}/*", recursive=True)
+        return Manager._runners
 
-        runners = []
-        for r in results:
-            try:
-                runner = Runner(r)
-                runners.append(runner)
-            except ValueError:
-                continue
-
-        return runners
-
-    print(
-        list_runners()
-    )
-
-    def list_dxvk():
+    @staticmethod
+    def get_dxvks():
         '''
-        List local DXVK.
+        Get local dxvks.
 
         Return
         ----------
         list:
-            a list of DXVK objects
+            a list of Dxvk objects
         '''
-        return
+        return Manager._dxvks
+
+    @staticmethod
+    def create_bottle(path: str, env: int, name: str, runner_path: str, versioning: bool = False, verbose: int = 0):
+        bottle = Bottle(
+            path=path,
+            create=True,
+            env=env,
+            runner_path=runner_path,
+            versioning=versioning,
+            verbose=verbose
+        )
+
+        Manager._bottles.append(bottle)
+        return bottle
