@@ -90,11 +90,19 @@ class Manager:
         return Manager._dxvks
 
     @staticmethod
-    def create_bottle(path: str, env: int, name: str, runner_path: str, versioning: bool = False, verbose: int = 0):
+    def create_bottle(
+        path: str, 
+        env: int, 
+        name: str, 
+        runner_path: str, 
+        versioning: bool = False, 
+        verbose: int = 0):
+        
         bottle = Bottle(
             path=path,
             create=True,
             env=env,
+            name=name,
             runner_path=runner_path,
             versioning=versioning,
             verbose=verbose

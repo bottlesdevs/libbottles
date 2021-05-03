@@ -67,7 +67,16 @@ class Bottle:
     ]
     wineprefix = object
 
-    def __init__(self, path: str, create: bool = False, env: int = 3, name: str = None, runner_path: str = None, verbose: int = 0, versioning: bool = False):
+    def __init__(
+            self,
+            path: str,
+            create: bool = False,
+            env: int = 3,
+            name: str = None,
+            runner_path: str = None,
+            verbose: int = 0,
+            versioning: bool = False):
+
         if not create:
             self.__validate(path)
             self.__load_config(path)
@@ -200,7 +209,11 @@ class Bottle:
                 value=value
             )
 
-    def update_config(self, key: str = None, value: str = None, scope: str = None):
+    def update_config(
+            self,
+            key: str = None,
+            value: str = None,
+            scope: str = None):
         '''
         Update keys for a bottle config.
 
