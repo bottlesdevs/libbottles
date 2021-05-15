@@ -18,7 +18,6 @@ Manager.create_bottle(
 
 ### List bottles
 ```python
-Manager.update_bottles()
 bottles = Manager.get_bottles()
 
 for b in bottles:
