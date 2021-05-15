@@ -1,6 +1,30 @@
 # libbottles
 A python library for interacting with Bottles.  
 
+## Examples
+### Create new bottle
+```python
+from libbottles.manager import Manager
+
+Manager.create_bottle(
+    env=2,
+    path="/full/bottle/path",
+    name="Merlot",
+    runner_path="/full/runner/path",
+    versioning=False,
+    verbose=0
+)
+```
+
+### List bottles
+```python
+Manager.update_bottles()
+bottles = Manager.get_bottles()
+
+for b in bottles:
+    print(b.config)
+```
+
 ## Purpose
 libbottles (currently a concept), should be used to create new Bottles 
 clients and _**should not be used to interact with Wine**_.  
