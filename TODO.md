@@ -1,0 +1,39 @@
+- [ ] Bottle management
+    - [ ] Apply environment
+    - [ ] Update configuration
+        - [ ] `rename`
+        - [ ] `set_runner`
+        - [ ] `set_versioning`
+        - [ ] `set_verbose`
+        - [ ] `set_dxvk_hud`
+        - [ ] `set_sync`
+        - [ ] `set_aco_compiler`
+        - [ ] `set_discrete_gpu`
+        - [ ] `set_virtual_desktop`
+        - [ ] `set_virtual_desktop_res`
+        - [ ] `set_pulseaudio_latency`
+        - [ ] `set_aco_compiler`
+        - [ ] `set_aco_compiler`
+    - [ ] Environment variables
+        - [ ] `add_env_var`
+        - [ ] `remove_env_var`
+        - [ ] `get_env_var` # return string
+    - [ ] DXVK
+        - [ ] `install_dxvk`
+        - [ ] `uninstall_dxvk`
+    - [ ] DLL overrides
+        - [ ] `add_dll_override`
+        - [ ] `remove_dll_override`
+    - [ ] Launchers (add custom launcher to Programs tab)
+        - [ ] `add_launcher`
+        - [ ] `remove_launcher`
+    - [ ] Dependencies
+        - [ ] `install_dependency`
+        - [ ] `uninstall_dependency`
+    - [ ] Versioning
+        - [ ] `new_state`
+        - [ ] `restore_state`
+        - [ ] `remove_state`
+- [ ] Download manager
+- [ ] Components
+- [ ] Runners

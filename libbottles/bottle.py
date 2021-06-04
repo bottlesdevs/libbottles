@@ -5,18 +5,19 @@ from libbottles.components.runner import Runner
 from libbottles import globals
 
 from libwine.wine import Wine
+
 seed(1)
 
 
 class Bottle:
-    '''
+    """
     Create a new object of type Bottle with all the methods for its management.
 
     Parameters
     ----------
     path : str
         the bottle full path
-    '''
+    """
     config = {}
     _config_struct = {
         "Name": "",
@@ -102,14 +103,14 @@ class Bottle:
 
     @staticmethod
     def __validate(path):
-        '''
+        """
         Check if essential paths exist in path.
 
         Parameters
         ----------
         path : str
             the bottle full path
-        '''
+        """
         promise = ["dosdevices", "drive_c"]
 
         dirs = glob(f"{path}/*")
@@ -122,7 +123,7 @@ class Bottle:
         return True
 
     def __load_config(self, path):
-        '''
+        """
         Load config from path, if doesn't exists then create.
         Also update config structure if outdated.
 
@@ -130,7 +131,7 @@ class Bottle:
         ----------
         path : str
             the bottle full path
-        '''
+        """
         try:
             file = open(f"{path}/bottle.json")
             self.config = json.load(file)
@@ -163,8 +164,8 @@ class Bottle:
             )
 
         missing_keys = (
-            self._config_struct["Parameters"].keys() -
-            self.config["Parameters"].keys()
+                self._config_struct["Parameters"].keys() -
+                self.config["Parameters"].keys()
         )
         for key in missing_keys:
             self.update_config(
@@ -214,18 +215,18 @@ class Bottle:
             key: str = None,
             value: str = None,
             scope: str = None):
-        '''
+        """
         Update keys for a bottle config.
 
         Parameters
         ----------
         key : str
-            the key namet
+            the key name
         value : str
-            the value to be sett
+            the value to be set
         scope : str (optional)
             where to look for the key if it is not the root (default is None)
-        '''
+        """
         if scope is not None:
             self.config[scope][key] = value
         else:
