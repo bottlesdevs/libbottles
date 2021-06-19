@@ -37,3 +37,4 @@
 - [ ] Download manager
 - [ ] Components
 - [ ] Runners
+    - [ ] System runners (system, flatpak, snap)
