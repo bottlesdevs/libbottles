@@ -2,7 +2,7 @@
     - [ ] Apply environment
     - [ ] Update configuration
         - [x] `rename`
-        - [ ] `set_runner`
+        - [ ] `set_runner` # requires `Runners` task first
         - [ ] `set_versioning`
         - [x] `set_verbose`
         - [x] `set_dxvk_hud`
