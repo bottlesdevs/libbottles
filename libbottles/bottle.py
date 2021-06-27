@@ -247,3 +247,14 @@ class Bottle:
                 value=name
             )
         raise ValueError("The bottle name cannot contain special characters.")
+
+    def set_runner(self):
+        # TODO
+        pass
+
+    def set_versioning(self):
+        # TODO
+        pass
+
+    def set_verbose(self, level: int):
+        self.wineprefix.set_verbose(level)
