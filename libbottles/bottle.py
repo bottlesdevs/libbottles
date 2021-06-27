@@ -67,6 +67,11 @@ class Bottle:
             "Parameters": {}
         }
     ]
+    _supported_sync_types = {
+        0: "wine",
+        1: "esync",
+        2: "fsync"
+    }
     wineprefix = object
 
     def __init__(
@@ -257,4 +262,67 @@ class Bottle:
         pass
 
     def set_verbose(self, level: int):
+        self.update_config(
+            key="Verbose",
+            value=level
+        )
         self.wineprefix.set_verbose(level)
+
+    def set_dxvk_hud(self, status: bool):
+        self.update_config(
+            key="dxvk_hud",
+            value=status,
+            scope="Parameters"
+        )
+
+    def set_sync(self, sync_type: int):
+        if sync_type not in self._supported_sync_types:
+            raise ValueError(f"{sync_type} is not a valid sync type.")
+
+        self.update_config(
+            key="sync",
+            value=sync_type,
+            scope="Parameters"
+        )
+
+    def set_aco_compiler(self, status: bool):
+        self.update_config(
+            key="aco_compiler",
+            value=status,
+            scope="Parameters"
+        )
+
+    def set_discrete_gpu(self, status: bool):
+        self.update_config(
+            key="discrete_gpu",
+            value=status,
+            scope="Parameters"
+        )
+
+    def set_virtual_desktop(self, status: bool):
+        self.update_config(
+            key="virtual_desktop",
+            value=status,
+            scope="Parameters"
+        )
+        if not status:
+            self.wineprefix.set_virtual_desktop(False)
+
+    def set_virtual_desktop_res(self, res: str):
+        self.set_virtual_desktop(True)
+        self.update_config(
+            key="virtual_desktop_res",
+            value=res,
+            scope="Parameters"
+        )
+        self.wineprefix.set_virtual_desktop(
+            status=True,
+            res=res
+        )
+
+    def set_pulseaudio_latency(self, status: bool):
+        self.update_config(
+            key="pulseaudio_latency",
+            value=status,
+            scope="Parameters"
+        )
