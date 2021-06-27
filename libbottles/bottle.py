@@ -1,6 +1,7 @@
 import json
 from glob import glob
 from random import seed, randint
+from libbottles.utils.checks import check_special_chars
 from libbottles.components.runner import Runner
 from libbottles import globals
 
@@ -118,8 +119,7 @@ class Bottle:
 
         for p in promise:
             if p not in dirs:
-                raise ValueError(
-                    "Given path doesn't seem a valid Bottle path.")
+                raise ValueError("Given path doesn't seem a valid Bottle path.")
         return True
 
     def __load_config(self, path):
@@ -240,3 +240,10 @@ class Bottle:
     '''
     Bottle management
     '''
+    def rename(self, name: str):
+        if not check_special_chars(text=name):
+            return self.update_config(
+                key="Name",
+                value=name
+            )
+        raise ValueError("The bottle name cannot contain special characters.")
