@@ -1,19 +1,17 @@
 - [ ] Bottle management
     - [ ] Apply environment
     - [ ] Update configuration
-        - [ ] `rename`
+        - [x] `rename`
         - [ ] `set_runner`
         - [ ] `set_versioning`
-        - [ ] `set_verbose`
-        - [ ] `set_dxvk_hud`
-        - [ ] `set_sync`
-        - [ ] `set_aco_compiler`
-        - [ ] `set_discrete_gpu`
-        - [ ] `set_virtual_desktop`
-        - [ ] `set_virtual_desktop_res`
-        - [ ] `set_pulseaudio_latency`
-        - [ ] `set_aco_compiler`
-        - [ ] `set_aco_compiler`
+        - [x] `set_verbose`
+        - [x] `set_dxvk_hud`
+        - [x] `set_sync`
+        - [x] `set_aco_compiler`
+        - [x] `set_discrete_gpu`
+        - [x] `set_virtual_desktop`
+        - [x] `set_virtual_desktop_res`
+        - [x] `set_pulseaudio_latency`
     - [ ] Environment variables
         - [ ] `add_env_var`
         - [ ] `remove_env_var`
