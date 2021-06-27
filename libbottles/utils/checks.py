@@ -14,7 +14,7 @@ def check_special_chars(text: str) -> bool:
     ----------
         returns True if it finds a special character, else False
     """
-    regex = re.compile('[@!#$%^&*()<>?/|}{~:.;,]')
+    regex = re.compile('[@!#$£%^&*()<>=?/|}{~:.;,]')
     if regex.search(text) is None:
         return False
     return True
