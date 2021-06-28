@@ -10,8 +10,7 @@ class Manager:
     _runners = []
     _dxvks = []
 
-    @staticmethod
-    def update_bottles(paths: list = None):
+    def update_bottles(self, paths: list = None):
         """
         Update user bottles.
 
@@ -20,6 +19,7 @@ class Manager:
         paths : list
             paths to search for bottles
         """
+        self._bottles = []
         results = []
         if paths is None:
             paths = [globals.Paths.bottles]
@@ -34,8 +34,7 @@ class Manager:
             except ValueError:
                 continue
 
-    @staticmethod
-    def update_runners(paths=None):
+    def update_runners(self, paths=None):
         """
         Update local runners.
 
@@ -44,10 +43,11 @@ class Manager:
         paths : list
             paths to search for runners
         """
+        self._runners = []
         results = []
         if paths is None:
             paths = [globals.Paths.runners]
-            
+
         for p in paths:
             results += glob(f"{p}/*", recursive=True)
 
