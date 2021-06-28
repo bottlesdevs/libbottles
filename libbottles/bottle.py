@@ -3,7 +3,6 @@ from glob import glob
 from random import seed, randint
 from libbottles.utils.checks import check_special_chars
 from libbottles.components.runner import Runner
-from libbottles import globals
 
 from libwine.wine import Wine
 
@@ -19,8 +18,8 @@ class Bottle:
     path : str
         the bottle full path
     """
-    config = {}
-    _config_struct = {
+    config: dict = {}
+    _config_struct: dict = {
         "Name": "",
         "Runner": "",
         "DXVK": "",
@@ -46,7 +45,7 @@ class Bottle:
         "DLL_Overrides": {},
         "Programs": {}
     }
-    _environments = [
+    _environments: dict = [
         {
             "Name": "Software",
             "Parameters": {
@@ -67,7 +66,7 @@ class Bottle:
             "Parameters": {}
         }
     ]
-    _supported_sync_types = {
+    _supported_sync_types: dict = {
         0: "wine",
         1: "esync",
         2: "fsync"
