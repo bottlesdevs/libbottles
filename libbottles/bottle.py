@@ -1,4 +1,4 @@
-import json
+import yaml
 from glob import glob
 from random import seed, randint
 from libbottles.utils.checks import check_special_chars
@@ -138,11 +138,11 @@ class Bottle:
             the bottle full path
         """
         try:
-            file = open(f"{path}/bottle.json")
-            self.config = json.load(file)
+            file = open(f"{path}/bottle.yml")
+            self.config = yaml.safe_load(file)
             file.close()
         except FileNotFoundError:
-            file = open(f"{path}/bottle.json", "w")
+            file = open(f"{path}/bottle.yml", "w")
 
             if len(self.config) == 0:
                 config = self._config_struct
@@ -150,11 +150,11 @@ class Bottle:
                 config["Path"] = path
                 # TODO: set runner to latest installed
 
-                json.dump(config, file, indent=4)
-                self.config = json.load(file)
+                yaml.dump(config, file, indent=4)
+                self.config = yaml.safe_load(file)
             else:
                 config = self.config
-                json.dump(config, file, indent=4)
+                yaml.dump(config, file, indent=4)
 
             file.close()
 
@@ -238,13 +238,14 @@ class Bottle:
             self.config[key] = value
 
         file = open(
-            f"{self.config['Path']}/bottle.json", "w")
-        json.dump(self.config, file, indent=4)
+            f"{self.config['Path']}/bottle.yml", "w")
+        yaml.dump(self.config, file, indent=4)
         file.close()
 
     '''
     Bottle management
     '''
+
     def rename(self, name: str):
         if not check_special_chars(text=name):
             return self.update_config(
