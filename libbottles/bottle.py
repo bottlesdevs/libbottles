@@ -1,5 +1,6 @@
 import yaml
 from glob import glob
+from datetime import datetime
 from random import seed, randint
 from libbottles.utils.checks import check_special_chars
 from libbottles.components.runner import Runner
@@ -25,8 +26,8 @@ class Bottle:
         "DXVK": "",
         "Path": "",
         "Environment": 2,
-        "Creation_Date": "",
-        "Update_Date": "",
+        "Created": "",
+        "Updated": "",
         "Versioning": False,
         "State": 0,
         "Verbose": 0,
@@ -147,6 +148,7 @@ class Bottle:
                 config = self._config_struct
                 config["Name"] = f"Generated {randint(10000, 20000)}"
                 config["Path"] = path
+                config["Created"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 # TODO: set runner to latest installed
 
                 yaml.dump(config, file, indent=4)
@@ -235,6 +237,8 @@ class Bottle:
             self.config[scope][key] = value
         else:
             self.config[key] = value
+
+        self.config["Updated"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
         file = open(
             f"{self.config['Path']}/bottle.yml", "w")
