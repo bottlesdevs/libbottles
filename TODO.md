@@ -19,6 +19,9 @@
     - [ ] DXVK
         - [ ] `install_dxvk`
         - [ ] `uninstall_dxvk`
+    - [ ] VKD3D
+        - [ ] `install_vkd3d`
+        - [ ] `uninstall_vkd3d`
     - [ ] DLL overrides
         - [ ] `add_dll_override`
         - [ ] `remove_dll_override`
